@@ -1,2 +1,0 @@
-# Bookbootcamp
-A bookstore aplicatio
