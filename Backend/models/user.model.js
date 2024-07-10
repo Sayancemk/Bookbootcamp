@@ -27,7 +27,7 @@ const userSchema=new mongoose.Schema({
     },
     avatar:{
         type:String,
-        default:" https://avatar.iran.liara.run/public/boy?username=Ash",
+       
     },
     role:{
         type:String,
