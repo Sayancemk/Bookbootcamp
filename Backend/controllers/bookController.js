@@ -37,6 +37,28 @@ const createBooks=asyncHandler(async(req,resp)=>{
 })
 
 
+const updateBooks=asyncHandler(async (req,resp)=>{
+    const {bookid}=req.headers;
+    if(!bookid){
+        throw new ApiError(400,"Bookid is required to update books");
+    }
+    const updateBook=await Books.findByIdAndUpdate(bookid,{
+        url:req.body.url,
+        title:req.body.title,
+        author:req.body.author,
+        price:req.body.price,
+        desc:req.body.desc,
+        language:req.body.language,
+    })
+    if(!updateBook){
+        throw new ApiError(400,"something went wrong while updating the book");
+    }
+    
+    return resp
+    .status(201)
+    .json(new ApiResponce(201,updateBook,"Book Updated Successfully"))
+})
+
 
 
 
@@ -44,4 +66,5 @@ const createBooks=asyncHandler(async(req,resp)=>{
 
 export{
     createBooks,
+    updateBooks,
 }
