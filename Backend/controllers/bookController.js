@@ -59,7 +59,7 @@ const updateBooks=asyncHandler(async (req,resp)=>{
     .json(new ApiResponce(201,updateBook,"Book Updated Successfully"))
 })
 
-const deletebook=asyn
+const deleteBook=asyncHandler(async(req,))
 
 
 
