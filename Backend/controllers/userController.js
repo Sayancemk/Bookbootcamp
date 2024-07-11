@@ -155,6 +155,7 @@ if(!user){
         throw new ApiError(404, "Invalid Credentials");
     }
     const id=existingUser._id;
+    const role=existingUser.role;
 
     let generateRefreshToken;
 
@@ -173,7 +174,13 @@ if(!user){
                 // return response
                 return resp
                 .status(200)
-                .json(new ApiResponce(200,{id,generateRefreshToken},"user login successfully"));
+                .json(new ApiResponce(200,
+                    {
+                    id:id,
+                    role:role,
+                    token:generateRefreshToken
+                    },
+                "user login successfully"));
             }
             else{
                 throw new ApiError(400,"Invalid credentials");
