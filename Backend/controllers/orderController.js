@@ -2,14 +2,14 @@ import {ApiError} from '../utils/ApiError.js';
 import {ApiResponce} from '../utils/ApiResponse.js';
 import {asyncHandler} from '../utils/Asynchandler.js';
 import {Books} from '../models/books.model.js';
-import {Orders} from '../models/order.model.js';
+import {Order} from '../models/order.model.js';
 import {User} from '../models/user.model.js';
 
 const placeOrder=asyncHandler(async(req,resp)=>{
     const {id}=req.headers;
     const {orders}=req.body;
     for(const orderedData of orders){
-        const newOrder=new Orders({user:id,book:orderedData._id});
+        const newOrder=new Order({user:id,book:orderedData._id});
         const orderData=await newOrder.save();
         if(!orderData){
             throw new ApiError(500,"Internal server error");
@@ -52,7 +52,7 @@ const getOrderHistory=asyncHandler(async(req,resp)=>{
 })
 
 const getAllOrders=asyncHandler(async(req,resp)=>{
-    const userData=await Orders.find().
+    const userData=await Order.find().
     populate({
         path:"book",
     })
@@ -74,7 +74,7 @@ const updateStatusOfOrder=asyncHandler(async(req,resp)=>{
     if(!id){
         throw new ApiError(400,"user id is required");
     }
-    const order=await Orders.findById(id);
+    const order=await Order.findById(id);
     if(!order){
         throw new ApiError(400,"Orders is not find")
     }

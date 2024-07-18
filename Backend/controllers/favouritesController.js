@@ -53,10 +53,10 @@ const removeBokFromFavourites=asyncHandler(async(req,resp)=>{
         throw new ApiError (500,"something went wrong for remove from favourites")
     }
 
+    return resp
+    .status(200)
+    .json(new ApiResponce(200,{},"Book removed successfully in favourites"))
 })
-return resp
-.status(200)
-.json(new ApiResponce(200,{},"Book removed successfully in favourites"))
 
 const getfavouriteBook=asyncHandler(async(req,resp)=>{
     const {id}=req.headers;
