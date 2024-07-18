@@ -216,7 +216,7 @@ const updateUserAddress=asyncHandler(async(req,resp)=>{
     if(!updateAddress){
         throw new ApiError (400, "new address is required to update the address field");
     }
-    const user=User.findById (id);
+    const user= await User.findById (id);
     if(!user){
         throw new ApiError(400,"User is not exists");
     }

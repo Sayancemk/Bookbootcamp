@@ -42,14 +42,20 @@ const updateBooks=asyncHandler(async (req,resp)=>{
     if(!bookid){
         throw new ApiError(400,"Bookid is required to update books");
     }
+    
+    const {updateUrl,updateTitle,updateAuthor,updatePrice,updateDesc,updateLanguage}=req.body;
+
     const updateBook=await Books.findByIdAndUpdate(bookid,{
-        url:req.body.url,
-        title:req.body.title,
-        author:req.body.author,
-        price:req.body.price,
-        desc:req.body.desc,
-        language:req.body.language,
+        url:updateUrl,
+        title:updateTitle,
+        author:updateAuthor,
+        price:updatePrice,
+        desc:updateDesc,
+        language:updateLanguage,
+    },{
+        new:true
     })
+
     if(!updateBook){
         throw new ApiError(400,"something went wrong while updating the book");
     }
