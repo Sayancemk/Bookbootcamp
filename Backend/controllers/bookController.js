@@ -24,7 +24,7 @@ const createBooks=asyncHandler(async(req,resp)=>{
         author:req.body.author,
         price:req.body.price,
         desc:req.body.desc,
-        language:req.body.language34,
+        language:req.body.language,
     });
     const book=await newBook.save();
     if(!book){
