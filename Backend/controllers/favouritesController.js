@@ -20,13 +20,13 @@ const addBookToFavourites=asyncHandler(async(req,resp)=>{
     if(isBookFavourites){
         throw new ApiError (400,"this book is already is in favourites")
     }
-    const addedBookInFavourites=await User.findByIdAndUpdate(id,{$push:{favourites:bookid}})
-    if(!addBookToFavourites){
+    const addedBookInFavourites=await User.findByIdAndUpdate(id,{$push:{favourites:bookid}},{new:true})
+    if(!addedBookInFavourites){
         throw new ApiError(500,"Something went wrong while added book into favourites")
     }
     return resp
     .status(200)
-    .json(new ApiResponce(200,{},"Book added successfully in favourites"))
+    .json(new ApiResponce(200,addedBookInFavourites,"Book added successfully in favourites"))
 
 })
 
@@ -47,23 +47,23 @@ const removeBokFromFavourites=asyncHandler(async(req,resp)=>{
 
         throw new ApiError(400,'book is not present in favourites')
     }
-   const deleteFromFavourites= await User.findByIdAndUpdate(id,{$pull:{favourites:bookid}})
+   const deleteFromFavourites= await User.findByIdAndUpdate(id,{$pull:{favourites:bookid}},{new:true})
 
     if(!deleteFromFavourites){
         throw new ApiError (500,"something went wrong for remove from favourites")
     }
+        return resp
+        .status(200)
+        .json(new ApiResponce(200,{},"Book removed successfully in favourites"))
+    })
 
-    return resp
-    .status(200)
-    .json(new ApiResponce(200,{},"Book removed successfully in favourites"))
-})
 
 const getfavouriteBook=asyncHandler(async(req,resp)=>{
     const {id}=req.headers;
     if(!id){
         throw new ApiError(400,"id is required to get favourites book")
     }
-    const userData= await User.findById(id).populate('favourites')
+    const userData= await User.findById(id);
     const favouriteBooks=userData.favourites;
     
     return resp
