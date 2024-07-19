@@ -17,10 +17,10 @@ const  addToCart=asyncHandler(async(req,resp)=>{
         throw new ApiError (400, "user is not exist here");
     }
     const isAddedCart=userData.cart.includes(bookid);
-    if(!isAddedCart){
+    if(isAddedCart){
         throw new ApiError(400,"This book item is already present in cart")
     }
-const addedToCart=await User.findByIdAndUpdate(id,{$push:{cart:bookid}});
+const addedToCart=await User.findByIdAndUpdate(id,{$push:{cart:bookid}},{new:true});
     if(!addedToCart){
         throw new ApiError (500,"Something went wrong to add book into cart")
     }
@@ -46,7 +46,7 @@ const removeFromCart=asyncHandler(async(req,resp)=>{
     if(!isRemoveCart){
         throw new ApiError(400,"This book item is  not present in cart")
     }
-    const removeFromCart=await User.findByIdAndUpdate(id,{$pull:{cart:bookid}});
+    const removeFromCart=await User.findByIdAndUpdate(id,{$pull:{cart:bookid}},{new:true});
     if(!removeFromCart){
         throw new ApiError (500,"Something went wrong to remove book from cart")
     }
@@ -61,7 +61,7 @@ const getAllCart=asyncHandler(async(req,resp)=>{
     if(!id){
         throw new ApiError(400,"id is required to access");
     }
-    const userData=User.findById(id).populate('cart');
+    const userData=User.findById(id);
     const cart=userData.cart.reverse();
      return resp
      .status(200)
