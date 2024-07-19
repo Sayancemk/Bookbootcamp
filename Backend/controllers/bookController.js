@@ -83,7 +83,8 @@ const deleteBook=asyncHandler(async(req,resp)=>{
 
 const getAllBook= asyncHandler(async(req,resp)=>{
 
-    const books=await Books.findById().sort({createdAt:-1});
+    const books=await Books.find().sort({createdAt:-1});
+
     return resp
     .status(200)
     .json(new ApiResponce(200,books,success))
@@ -91,7 +92,8 @@ const getAllBook= asyncHandler(async(req,resp)=>{
 
 const getRecentbook=asyncHandler(async(req,resp)=>{
 
-    const book=await Books.findById().sort({createdAt:-1}).limit(4);
+  
+    const book=await Books.find().sort({createdAt:-1}).limit(4);
 
     return resp
     .status(200)
