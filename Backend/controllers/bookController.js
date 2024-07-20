@@ -11,7 +11,7 @@ const createBooks=asyncHandler(async(req,resp)=>{
     if(!id){
         throw new ApiError(400, " id is required");
     }
-    const user=User.findById(id);
+    const user=await User.findById(id);
     if(!user){
         throw new ApiError(400, "You cannot exists here")
     }
