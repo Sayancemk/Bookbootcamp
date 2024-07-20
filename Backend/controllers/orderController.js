@@ -16,13 +16,13 @@ const placeOrder=asyncHandler(async(req,resp)=>{
         }
     const updateOrder= await User.findByIdAndUpdate(id,{
         $push:{orderHistory:orderData._id}
-    })
+    },{new:true})
     if(!updateOrder){
         throw new ApiError(500,"Someting went wrong to update the orders details ");
     }
     const updateCart=await User.findByIdAndUpdate(id,{
             $pull:{cart:orderedData._id}
- })
+ }, {new:true})
     if(!updateCart){
     throw new ApiError(500,"Someting went wrong to update the orders details ");
 }
@@ -83,9 +83,9 @@ const updateStatusOfOrder=asyncHandler(async(req,resp)=>{
     if(findUserRole.role!=="admin"){
         throw new ApiError(400,"You are not authorised")
     }else{
-        updateOrders=await Orders.findByIdAndUpdate(id,{
+        updateOrders=await Order.findByIdAndUpdate(id,{
             status:req.body.status
-        })
+        },{new:true})
         if(!updateOrders){
             throw new ApiError(500,"Something went wrong")
         }
