@@ -70,7 +70,8 @@ const getAllOrders=asyncHandler(async(req,resp)=>{
 })
 
 const updateStatusOfOrder=asyncHandler(async(req,resp)=>{
-    const {orderId,id}=req.headers;
+    const {orderId}=req.params;
+    const {id}=req.headers;
     if(!id){
         throw new ApiError(400,"user id is required");
     }
