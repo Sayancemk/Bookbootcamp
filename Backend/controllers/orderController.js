@@ -44,10 +44,10 @@ const getOrderHistory=asyncHandler(async(req,resp)=>{
     if(!userData){
         throw new ApiError(500,"Something went wrong")
     }
-
+    const userdata=userData.orderHistory.reverse();
     return resp
     .status(201)
-    .json(new ApiResponce(201,{userData},"All of your ordersHistory"))
+    .json(new ApiResponce(201,{userdata},"All of your ordersHistory"))
 
 })
 
@@ -59,7 +59,7 @@ const getAllOrders=asyncHandler(async(req,resp)=>{
     .populate({
         path:"user"
     })
-    .sort({creaatedAt:-1})
+    .sort({createdAt:-1})
 
     if(!userData){
         throw new ApiError(500,"Something went wrong")
@@ -70,20 +70,26 @@ const getAllOrders=asyncHandler(async(req,resp)=>{
 })
 
 const updateStatusOfOrder=asyncHandler(async(req,resp)=>{
-    const {id}=req.params;
+    const {orderId,id}=req.headers;
     if(!id){
         throw new ApiError(400,"user id is required");
     }
-    const order=await Order.findById(id);
+    if(!orderId){
+        throw new ApiError(400,"Order id is required");
+    }
+    const userData=await User.findById(id);
+    if(!userData){
+        throw new ApiError(400,"User is not find")
+    }
+    const order=await Order.findById(orderId);
     if(!order){
         throw new ApiError(400,"Orders is not find")
     }
-    const findUserRole=order.user;
-    let updateOrders;
-    if(findUserRole.role!=="admin"){
+    const findUserRole=userData.role;
+    if(findUserRole!=="admin"){
         throw new ApiError(400,"You are not authorised")
     }else{
-        updateOrders=await Order.findByIdAndUpdate(id,{
+        updateOrders=await Order.findByIdAndUpdate(orderId,{
             status:req.body.status
         },{new:true})
         if(!updateOrders){
@@ -95,7 +101,6 @@ const updateStatusOfOrder=asyncHandler(async(req,resp)=>{
     .json(new ApiResponce(201,{updateOrders},"Status updated successfully"))
     
 })
-
 export {
     placeOrder,
     getOrderHistory,
