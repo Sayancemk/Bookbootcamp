@@ -10,7 +10,7 @@ const addBookToFavourites=asyncHandler(async(req,resp)=>{
         throw new ApiError (400," id is required ")
     }
     if(!bookid){
-        throw new ApiError(400,"booid is required")
+        throw new ApiError(400,"bookid is required")
     }
     const userData=await User.findById(id);
     if(!userData){
