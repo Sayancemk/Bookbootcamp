@@ -10,7 +10,7 @@ const  addToCart=asyncHandler(async(req,resp)=>{
         throw new ApiError (400," id is required ")
     }
     if(!bookid){
-        throw new ApiError(400,"booid is required")
+        throw new ApiError(400,"bookid is required")
     }
     const userData=await User.findById(id);
     if(!userData){
@@ -46,7 +46,7 @@ const removeFromCart=asyncHandler(async(req,resp)=>{
     if(!isRemoveCart){
         throw new ApiError(400,"This book item is  not present in cart")
     }
-    const removeFromCart=await User.findByIdAndUpdate(id,{$pull:{cart:bookid}},{new:true});
+    const removeFromCart=await User.findByIdAndUpdate(id,{$pull:{cart:bookid}});
     if(!removeFromCart){
         throw new ApiError (500,"Something went wrong to remove book from cart")
     }
@@ -61,7 +61,7 @@ const getAllCart=asyncHandler(async(req,resp)=>{
     if(!id){
         throw new ApiError(400,"id is required to access");
     }
-    const userData=User.findById(id);
+    const userData= await User.findById(id);
     const cart=userData.cart.reverse();
      return resp
      .status(200)
